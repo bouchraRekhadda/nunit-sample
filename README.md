@@ -1,8 +1,8 @@
-This is a sample repo to reproduce **NUnit.ENgine 3.12.0** assemblies load issues on .NET Core.
+This is a sample repo to reproduce **NUnit.ENgine 3.12.0** assemblies load issues on .NET Core (cf. [nunit.console-#942](https://github.com/nunit/nunit-console/pull/942)).
 
 ### Run tests
-In order to run the test using NUnit.Engine 3.12.0, you will need to use [NUnit.ConsoleRunner.NetCore](https://www.nuget.org/packages/NUnit.ConsoleRunner.NetCore/) NuGet package. For that add this package as a dependency to one of your projects and perform a `dotnet restore` (or you could try with [Get-PackageProvider](https://docs.microsoft.com/en-us/powershell/module/packagemanagement/get-packageprovider?view=powershell-7.1)).
-Once the package is restores (mine was at `C:\Users\brekhadd020117\.nuget` ), locate it and run:
+In order to run the test using NUnit.Engine 3.12.0 (assuming you already run `dotnet build`), you will need to use [NUnit.ConsoleRunner.NetCore](https://www.nuget.org/packages/NUnit.ConsoleRunner.NetCore/) 3.12.0-beta*(beta1 or beta2) NuGet package. For that add this package as a dependency to one of your projects and perform a `dotnet restore` (or you could try with [Get-PackageProvider](https://docs.microsoft.com/en-us/powershell/module/packagemanagement/get-packageprovider?view=powershell-7.1)).
+Once the package is restored (mine was at `C:\Users\brekhadd020117\.nuget` ), locate it and run:
 
 ```C:\Users\brekhadd020117\.nuget\packages\nunit.consolerunner.netcore\3.12.0-beta1\tools\nunit3-console.exe <path_to_clone>\nunit-sample\.build\bin\Debug\netcoreapp3.1\UnitTests.dll```
 
