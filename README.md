@@ -13,15 +13,10 @@ Once the package is restored (mine was at `C:\Users\brekhadd020117\.nuget` ), lo
 
 ### Actual behavior
 
->System.Reflection.TargetInvocationException : Exception has been thrown by the target of an invocation.
-  ----> System.IO.FileNotFoundException : Could not load file or assembly 'LibraryProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor, Boolean wrapExceptions)
-   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
-   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
-   at UnitTests.EmitDemo.CalculateMax(Double a, Double b) in D:\ARD\nunit-sample\UnitTests\EmiDemo.cs:line 82
-   at UnitTests.EmitDemo.Test() in D:\ARD\nunit-sample\UnitTests\EmiDemo.cs:line 92
---FileNotFoundException
-   at RoslynCore.Helper.GetMax(Double d1, Double d2)
+>Error : UnitTests.EmitDemo.Test_EmiCompilation
+System.Exception : Type 'DummyNamespace.Helper' could not be found
+   at UnitTests.EmitDemo.CalculateSum(Double a, Double b) in D:\git\nunit-sample\UnitTests\EmitDemo.cs:line 83
+   at UnitTests.EmitDemo.Test_EmiCompilation() in D:\git\nunit-sample\UnitTests\EmitDemo.cs:line 99
 
 ### Attempt of fix
 

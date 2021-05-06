@@ -7,8 +7,8 @@
     <PackageReference Include="NUnit" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" PrivateAssets="all" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" PrivateAssets="all" />
-    <PackageReference Include="NunitXml.TestLogger" Version="3.0.9" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="2.10.0" PrivateAssets="all" />
+    <PackageReference Include="NunitXml.TestLogger" Version="2.1.62" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="2.10.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibraryProject\LibraryProject.csproj" />

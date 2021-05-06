@@ -13,8 +13,6 @@ namespace UnitTests
 {
     public sealed class EmitDemo
     {
-        #region Private helpers
-
         private static IEnumerable<string> GetReferencedAssembliesRecursively(Assembly assembly)
         {
             var assemblies = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -27,14 +25,6 @@ namespace UnitTests
             return assemblies;
         }
 
-        private static bool MethodDoesMatch(MethodInfo method)
-        {
-            var parameters = method.GetParameters();
-            return parameters.Length == 2 && parameters[0].ParameterType == typeof(double);
-        }
-
-        #endregion Private helpers
-
         private static object CalculateSum(double a, double b)
         {
             const string code = @"Option strict off
@@ -42,7 +32,7 @@ Imports System
 Imports Microsoft.VisualBasic
 Imports LibraryProject
 
-Namespace RoslynCore
+Namespace DummyNamespace
 
     Public Class Helper
              Inherits CustomType
@@ -76,23 +66,17 @@ End Namespace";
                 var asm = nunitCustomAssemblyLoadContext.LoadFromAssemblyPath(path);*/
                 // this doesn't
                 var asm = Assembly.LoadFrom(path);
-                var type = asm.GetType("RoslynCore.Helper");
+                var classFullName = "DummyNamespace.Helper";
+                var type = asm.GetType(classFullName);
                 if (type == null)
-                    throw new Exception("Type 'RoslynCore.Helper' could not be found");
-                var methods = type.GetMethods();
-                try
-                {
-                    var methodInfo = methods.Where(m => StringComparer.OrdinalIgnoreCase.Equals("Sum", m.Name)).Single(m => MethodDoesMatch(m));
-                    if (methodInfo == null)
-                        throw new Exception($"Method 'Sum' could not be found in type {type.FullName}");
-                    var result = methodInfo.Invoke(null, new object[] { a, b });
-                    Console.WriteLine($"Sum is {result}");
-                    return result;
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                    throw new Exception($"Type '{classFullName}' could not be found");
+                var instance = asm.CreateInstance(classFullName);
+                if(instance == null)
+                    throw new Exception($"'{classFullName}' deosn't have a valid default constructor");
+                var methodInfo = type.GetMethod("GetSum");
+                if (methodInfo == null)
+                    throw new Exception($"Method 'Sum' could not be found in type {type.FullName}");
+                return methodInfo.Invoke(null, new object[] { a, b });
             }
             foreach (var codeIssue in compilationResult.Diagnostics)
                 Console.WriteLine($"ID: {codeIssue.Id}, Message: {codeIssue.GetMessage()}, Location: {codeIssue.Location.GetLineSpan()}, Severity: {codeIssue.Severity}");
