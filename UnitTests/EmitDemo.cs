@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 
 namespace UnitTests
 {
@@ -64,8 +65,12 @@ End Namespace";
                 // below code works since our reference to LibraryProject.dll is already loaded in thi ALC
                 /* var nunitCustomAssemblyLoadContext = AssemblyLoadContext.All.Single(c => c.ToString().Contains("NUnit.Engine.Internal.CustomAssemblyLoadContext"));
                 var asm = nunitCustomAssemblyLoadContext.LoadFromAssemblyPath(path);*/
-                // this doesn't
-                var asm = Assembly.LoadFrom(path);
+
+                //This code works as well using NUnit.Console 3.13.0: https://github.com/nunit/nunit-console/pull/942
+                var asm = (AssemblyLoadContext.CurrentContextualReflectionContext ?? AssemblyLoadContext.Default).LoadFromAssemblyPath(path);
+
+                // this doesn't work
+                //var asm = Assembly.LoadFrom(path);
                 var classFullName = "DummyNamespace.Helper";
                 var type = asm.GetType(classFullName);
                 if (type == null)
@@ -73,10 +78,10 @@ End Namespace";
                 var instance = asm.CreateInstance(classFullName);
                 if(instance == null)
                     throw new Exception($"'{classFullName}' deosn't have a valid default constructor");
-                var methodInfo = type.GetMethod("GetSum");
+                var methodInfo = type.GetMethod("Sum");
                 if (methodInfo == null)
                     throw new Exception($"Method 'Sum' could not be found in type {type.FullName}");
-                return methodInfo.Invoke(null, new object[] { a, b });
+                return methodInfo.Invoke(instance, new object[] { a, b });
             }
             foreach (var codeIssue in compilationResult.Diagnostics)
                 Console.WriteLine($"ID: {codeIssue.Id}, Message: {codeIssue.GetMessage()}, Location: {codeIssue.Location.GetLineSpan()}, Severity: {codeIssue.Severity}");
